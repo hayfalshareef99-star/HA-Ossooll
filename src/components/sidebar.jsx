@@ -1,6 +1,14 @@
 import "./sidebar.css";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
   return (
     <div className="sidebar">
       <div className="sidebar__top">
@@ -19,9 +27,7 @@ const Sidebar = () => {
           <div className="sidebar__item active">Dashboard</div>
           <div className="sidebar__item">Assets</div>
           <div className="sidebar__item">Maintenance</div>
-
           <div className="sidebar__divider"></div>
-
           <div className="sidebar__item">Categories</div>
           <div className="sidebar__item">Location</div>
           <div className="sidebar__item">Settings</div>
@@ -29,7 +35,9 @@ const Sidebar = () => {
       </div>
 
       <div className="sidebar__bottom">
-        <div className="sidebar__logout">Log out</div>
+        <div className="sidebar__logout" onClick={handleLogout}>
+          Log out
+        </div>
       </div>
     </div>
   );

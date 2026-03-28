@@ -1,7 +1,30 @@
-import { Link } from "react-router";
 import "./Login.css";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Register = () => {
+  const navigate = useNavigate();
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+const handleRegister = () => {
+  if (!name || !email || !password || !confirmPassword) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    alert("Passwords do not match");
+    return;
+  }
+
+  localStorage.setItem("token", "123");
+  navigate("/dashboard");
+};
+
   return (
     <div className="auth-login">
       <header className="auth-login__header">
@@ -13,44 +36,47 @@ const Register = () => {
           <h1 className="auth-login__title">Create Account</h1>
 
           <p className="auth-login__subtitle">
-            Create your account to get started with the system.
+            Create your account to continue.
           </p>
 
           <input
             type="text"
-            placeholder="Full Name"
+            placeholder="Enter your Name"
             className="auth-login__input"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
 
           <input
             type="email"
-            placeholder="Email Address"
+            placeholder="Enter your Email"
             className="auth-login__input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
 
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Enter your Password"
             className="auth-login__input"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <input
             type="password"
             placeholder="Confirm Password"
             className="auth-login__input"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
-          <button className="auth-login__primary-btn">
+          <button className="auth-login__primary-btn" onClick={handleRegister}>
             Create Account
           </button>
 
-          <button className="auth-login__google-btn">
-            <span className="auth-login__google-icon">G</span>
-            Sign Up With Google
-          </button>
-
           <p className="auth-login__bottom-text">
-            Already have an account? <Link to="/"> Sign in </Link>
+            Already have an account? <Link to="/">Sign in</Link>
           </p>
         </section>
 
@@ -62,42 +88,6 @@ const Register = () => {
           />
         </section>
       </main>
-
-      <footer className="auth-login__footer">
-        <div className="auth-login__footer-col">
-          <h3>Product</h3>
-          <p>Employee Assets</p>
-          <p>Asset Tracking</p>
-          <p>Asset Management</p>
-          <p>Asset Service</p>
-        </div>
-
-        <div className="auth-login__footer-col">
-          <h3>Information</h3>
-          <p>FAQ</p>
-          <p>Blog</p>
-          <p>Support</p>
-        </div>
-
-        <div className="auth-login__footer-col">
-          <h3>Company</h3>
-          <p>About us</p>
-          <p>Careers</p>
-          <p>Contact us</p>
-        </div>
-
-        <div className="auth-login__footer-contact">
-          <div>
-            <h3>Contact Our Team</h3>
-            <p>Feel free to reach out</p>
-            <p>we're happy to assist you.</p>
-          </div>
-
-          <button className="auth-login__footer-btn">
-            Contact Us!
-          </button>
-        </div>
-      </footer>
     </div>
   );
 };
