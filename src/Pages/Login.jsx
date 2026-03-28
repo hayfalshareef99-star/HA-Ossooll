@@ -1,19 +1,35 @@
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import Input from "../components/Input";
+import Button from "../components/Button";
 
 const Login = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleLogin = () => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!email || !password) {
-      alert("Please enter email and password");
+      setError("Please fill in all fields");
       return;
     }
 
+    if (!emailPattern.test(email)) {
+      setError("Please enter a valid email");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
+
+    setError("");
     localStorage.setItem("token", "123");
     navigate("/dashboard");
   };
@@ -32,7 +48,7 @@ const Login = () => {
             Welcome back! Please log in to continue to your account.
           </p>
 
-          <input
+          <Input
             type="email"
             placeholder="Enter your Email"
             className="auth-login__input"
@@ -40,7 +56,7 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          <input
+          <Input
             type="password"
             placeholder="Enter your Password"
             className="auth-login__input"
@@ -48,19 +64,23 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
 
+          {error && <p className="auth-login__error">{error}</p>}
+
           <label className="auth-login__check-row">
             <input type="checkbox" className="auth-login__checkbox" />
             <span className="auth-login__check-text">Keep me logged in</span>
           </label>
 
-          <button className="auth-login__primary-btn" onClick={handleLogin}>
-            Sign In
-          </button>
+          <Button
+            text="Sign In"
+            onClick={handleLogin}
+            className="auth-login__primary-btn"
+          />
 
-          <button className="auth-login__google-btn">
-            <span className="auth-login__google-icon">G</span>
-            Sign In With Google
-          </button>
+          <Button
+            text="Sign In With Google"
+            className="auth-login__google-btn"
+          />
 
           <p className="auth-login__bottom-text">
             Need an account? <Link to="/register">Create one!</Link>

@@ -1,6 +1,8 @@
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import Input from "../components/Input";
+import Button from "../components/Button";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -9,18 +11,32 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
 
 const handleRegister = () => {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   if (!name || !email || !password || !confirmPassword) {
-    alert("Please fill all fields");
+    setError("Please fill in all fields");
+    return;
+  }
+
+  if (!emailPattern.test(email)) {
+    setError("Please enter a valid email");
+    return;
+  }
+
+  if (password.length < 6) {
+    setError("Password must be at least 6 characters");
     return;
   }
 
   if (password !== confirmPassword) {
-    alert("Passwords do not match");
+    setError("Passwords do not match");
     return;
   }
 
+  setError("");
   localStorage.setItem("token", "123");
   navigate("/dashboard");
 };
@@ -39,41 +55,44 @@ const handleRegister = () => {
             Create your account to continue.
           </p>
 
-          <input
-            type="text"
-            placeholder="Enter your Name"
-            className="auth-login__input"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+  <Input
+  type="text"
+  placeholder="Enter your Name"
+  className="auth-login__input"
+  value={name}
+  onChange={(e) => setName(e.target.value)}
+/>
 
-          <input
-            type="email"
-            placeholder="Enter your Email"
-            className="auth-login__input"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+<Input
+  type="email"
+  placeholder="Enter your Email"
+  className="auth-login__input"
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+/>
 
-          <input
-            type="password"
-            placeholder="Enter your Password"
-            className="auth-login__input"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+<Input
+  type="password"
+  placeholder="Enter your Password"
+  className="auth-login__input"
+  value={password}
+  onChange={(e) => setPassword(e.target.value)}
+/>
 
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            className="auth-login__input"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+<Input
+  type="password"
+  placeholder="Confirm Password"
+  className="auth-login__input"
+  value={confirmPassword}
+  onChange={(e) => setConfirmPassword(e.target.value)}
+/>
+{error && <p className="auth-login__error">{error}</p>}
 
-          <button className="auth-login__primary-btn" onClick={handleRegister}>
-            Create Account
-          </button>
+<Button
+  text="Create Account"
+  onClick={handleRegister}
+  className="auth-login__primary-btn"
+/>
 
           <p className="auth-login__bottom-text">
             Already have an account? <Link to="/">Sign in</Link>

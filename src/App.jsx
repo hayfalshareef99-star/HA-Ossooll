@@ -1,26 +1,32 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
 import "./App.css";
 
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Dashboard from "./Pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Footer from "./components/Footer";
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+
   return (
-    <BrowserRouter>
-      <nav
-        style={{
-          padding: "20px",
-          backgroundColor: "#f4f4f4",
-          display: "flex",
-          gap: "20px",
-        }}
-      >
-        <Link to="/">تسجيل الدخول</Link>
-        <Link to="/register">إنشاء حساب</Link>
-        <Link to="/dashboard">لوحة التحكم</Link>
-      </nav>
+    <>
+      {/* Navbar يظهر فقط داخل dashboard */}
+      {location.pathname === "/dashboard" && (
+        <nav
+          style={{
+            padding: "20px",
+            backgroundColor: "#f4f4f4",
+            display: "flex",
+            gap: "20px",
+          }}
+        >
+          <Link to="/">تسجيل الدخول</Link>
+          <Link to="/register">إنشاء حساب</Link>
+          <Link to="/dashboard">لوحة التحكم</Link>
+        </nav>
+      )}
 
       <div style={{ padding: "20px" }}>
         <Routes>
@@ -32,8 +38,19 @@ function App() {
           </Route>
         </Routes>
       </div>
+
+      {/* Footer */}
+      <Footer />
+    </>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }
 
-export default App; 
+export default App;
